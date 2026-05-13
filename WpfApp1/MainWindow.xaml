@@ -1,0 +1,221 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="870">
+
+    <StackPanel Orientation="Vertical">
+
+        <Border BorderBrush="#FF8080FF" BorderThickness="2">
+            <StackPanel Orientation="Horizontal" Background="#FFB3B3FF">
+                <Label FontFamily="Book Antiqua">Planet:</Label>
+                <ComboBox x:Name="PlanetSelect" DropDownClosed="Switch_Planet" FontFamily="Book Antiqua">
+                    <ComboBoxItem IsSelected="True">Earth</ComboBoxItem>
+                    <ComboBoxItem>Fégarð</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Column="0" Fill="#FFe6e6ff"/>
+
+            <Border BorderBrush="#FF8080FF" BorderThickness="2,0,2,2" Grid.Column="1" Grid.RowSpan="2">
+                <Rectangle Fill="#FFCCCCFF"/>
+            </Border>
+
+            <!-- Drawing area -->
+            <!--<Canvas x:Name="DrawingCanvas"
+                    Grid.Column="0"
+                    Background="LightGray">
+                <Canvas.Clip>
+                    <EllipseGeometry Center="200,200"
+                                 RadiusX="200"
+                                 RadiusY="200"/>
+                </Canvas.Clip>
+            </Canvas>-->
+
+            <Viewbox Stretch="Uniform" Grid.Column="0" Margin="15, 15, 15, 25">
+
+                <Grid Width="400" Height="400">
+                    <Canvas x:Name="DrawingCanvas"
+                        Width="360"
+                        Height="360"
+                        Background="#FF00004D"
+                        MouseLeftButtonDown="Canvas_MouseLeftButtonDown">
+                        
+                        <Canvas.Clip>
+                            <EllipseGeometry Center="180,180"
+                                             RadiusX="180"
+                                             RadiusY="180"/>
+                                             
+                        </Canvas.Clip>
+                    </Canvas>
+
+                    <!-- Circle border -->
+                    <Ellipse Width="371"
+                             Height="371"
+                             Stroke="Black"
+                             StrokeThickness="6"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             IsHitTestVisible="False"/>
+                    <!--"#FF302303"-->
+
+                    <Canvas x:Name="CompassOverlay" Width="400" Height="400" IsHitTestVisible="False">
+                        
+                        <!-- Cardinal -->
+                        <TextBlock x:Name="NorthText" Text="N"  Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="SouthText" Text="S"  Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="EastText"  Text="E"  Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="WestText"  Text="W"  Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.5,0.5"/>
+
+                        <!-- Diagonals -->
+                        <TextBlock x:Name="NEText" Text="NE" Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="10" FontWeight="SemiBold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="SEText" Text="SE" Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="10" FontWeight="SemiBold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="SWText" Text="SW" Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="10" FontWeight="SemiBold" RenderTransformOrigin="0.5,0.5"/>
+                        <TextBlock x:Name="NWText" Text="NW" Foreground="#FFD99F0D" FontFamily="Lucida Handwriting" FontSize="10" FontWeight="SemiBold" RenderTransformOrigin="0.5,0.5"/>
+
+                    </Canvas>
+
+                </Grid>
+            </Viewbox>
+
+            <Popup x:Name="DeletePopup"
+                Placement="Relative"
+                StaysOpen="False">
+                <Border Background="LightGray"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    Padding="5">
+
+                    <StackPanel Orientation="Vertical">
+                        <Label x:Name="Star_name"></Label>
+                        <Label x:Name="Star_alt"></Label>
+                        <Label x:Name="Star_az"></Label>
+                        <Button Content="Delete Star" Width ="100" Click="DeleteStar_Click" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+
+            <ScrollViewer Grid.Column="1">
+
+                <StackPanel Orientation="Vertical">
+                    <Expander Header="Set place and time" IsExpanded="True">
+
+                        <StackPanel Orientation="Vertical" Margin="25,0,15,0">
+
+                            <Label x:Name="PlaceTimeHeader" Background="#FFB3B3FF" FontFamily="Book Antiqua">Set place and time</Label>
+
+                            <Label x:Name="DLabel" FontFamily="Book Antiqua">Days past new year:</Label>
+                            <TextBox x:Name="DBox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,0,0"/>
+
+                            <Label x:Name="TLabel" FontFamily="Book Antiqua">Hours after midnight:</Label>
+                            <TextBox x:Name="TBox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,0,0"/>
+
+                            <Label x:Name="LaLabel" FontFamily="Book Antiqua">Latitude:</Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="LaBox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="LaUnits" FontFamily="Book Antiqua">
+                                    <ComboBoxItem IsSelected="True">Degrees</ComboBoxItem>
+                                    <ComboBoxItem>Radians</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <Label x:Name="LoLabel" FontFamily="Book Antiqua">Longitude:</Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="LoBox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="LoUnits" FontFamily="Book Antiqua">
+                                    <ComboBoxItem IsSelected="True">Degrees</ComboBoxItem>
+                                    <ComboBoxItem>Radians</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <Button Content="Update" FontFamily="Book Antiqua" Width ="100" Click="Update_DateTime" Margin="0,10,0,0"/>
+
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander Header="Adjust visibility" IsExpanded="True">
+
+                        <StackPanel Orientation="Vertical" Margin="25,0,15,0">
+
+                            <Label x:Name="MaxVisLabel" FontFamily="Book Antiqua">Maximum magnitude visible:</Label>
+                            <Slider x:Name="MaxVisSlider" Minimum="0" Maximum="10" Value="6" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+                            <Label x:Name="DiffLabel" FontFamily="Book Antiqua">Star size variation:</Label>
+                            <Slider x:Name="DiffSlider" Minimum="0" Maximum="1" Value="0.7" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+
+                            <Button Content="Update" FontFamily="Book Antiqua" Width ="100" Click="Update_DateTime" Margin="0,10,0,0"/>
+                            
+                        </StackPanel>
+
+                    </Expander>
+
+                    <!-- Coordinate input -->
+                    <Expander Header="Add Star">
+                        <StackPanel Orientation="Vertical" Margin="25,0,15,0" Grid.Column="1" Grid.Row="1">
+
+                            <Label x:Name="StarStuffHeader" Background="#FFB3B3FF" FontFamily="Book Antiqua">Add Star</Label>
+
+                            <Label x:Name="NLabel" FontFamily="Book Antiqua">Star Name:</Label>
+                            <TextBox x:Name="NBox" FontFamily="Book Antiqua" Text="-" Width="150" Margin="0,0,0,0"/>
+
+                            <Label x:Name="RALabel" FontFamily="Book Antiqua">Right Ascention:</Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="RABox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="RAUnits" FontFamily="Book Antiqua">
+                                    <ComboBoxItem IsSelected="True">Degrees</ComboBoxItem>
+                                    <ComboBoxItem>Radians</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <Label x:Name="DecLabel" FontFamily="Book Antiqua">Declination:</Label>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="DecBox" FontFamily="Book Antiqua" Text="0" Width="150" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="DecUnits" FontFamily="Book Antiqua">
+                                    <ComboBoxItem IsSelected="True">Degrees</ComboBoxItem>
+                                    <ComboBoxItem>Radians</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <Label x:Name="MLabel" FontFamily="Book Antiqua">Magnitude:</Label>
+                            <TextBox x:Name="MBox" FontFamily="Book Antiqua" Text="3" Width="150" Margin="0,0,0,0"/>
+
+                            <Button Content="Add Star" FontFamily="Book Antiqua" Width ="100" Click="AddStar_Click" Margin="0,10,0,0"/>
+
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander Header="Import stars from file">
+                    </Expander>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+
+    </StackPanel>
+
+
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="393*"/>
+            <ColumnDefinition Width="407*"/>
+        </Grid.ColumnDefinitions>
+
+    </Grid>-->
+</Window>
