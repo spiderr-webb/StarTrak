@@ -186,7 +186,7 @@ namespace StarTrak
         private void Display_All_Stars()
         {
 
-            foreach(Star newStar in starsList)
+            foreach (Star newStar in starsList)
             {
                 Draw_Star(newStar, true);
             }
@@ -214,7 +214,7 @@ namespace StarTrak
                 }
 
                 double m = Math.Max(0.8, MaxVisSlider.Value * Math.Pow(((MaxVisSlider.Value - newStar.mag) / (MaxVisSlider.Value - -1.5)), DiffSlider.Value));  //6 * Math.Pow(((6 - newStar.mag) / (6 - -1.5)), 0.7);
-            
+
 
                 //double m = Math.Round((9 - newStar.mag) / 2);
 
@@ -289,7 +289,7 @@ namespace StarTrak
             {
                 selectedStar.Stroke = Brushes.Transparent;
 
-                
+
             }
 
             selectedStar = dot;
