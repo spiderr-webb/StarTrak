@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 public class SkyObject
-    // Contains functions to calculate coordinates of a body from RA, dec, and GST
+// Contains functions to calculate coordinates of a body from RA, dec, and GST
 {
     public string name { get; protected set; }
 
@@ -101,7 +101,7 @@ public class Star : SkyObject
         {
             name = name_in;
         }
-        
+
         RA = RA_in; // * (Math.PI / 180); //needs to be in radians
         dec = dec_in; // * (Math.PI / 180); // also in radians
         mag = mag_in;
@@ -165,7 +165,7 @@ class Sun : SkyObject
     }
 }
 
-    class Moon : SkyObject
+class Moon : SkyObject
 {
     public Moon() : base()
     {
