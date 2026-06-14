@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using static System.Console;
 
 
-namespace WpfApp1
+namespace StarTrak
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
